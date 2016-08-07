@@ -47,12 +47,23 @@ PouchDB.sync(db, document.location.origin + '/db/' + LIST_KEY)
     db.info(function(err, result){
       if (err) return error(err);
 
+      const liveSync = function(){
+        PouchDB.sync(db, document.location.origin + '/db/' + LIST_KEY, {
+          live: true, retry: true
+        })
+      };
+
       // If the database has not just been created, render:
-      if (result.update_seq !== 0) return refresh();
+      if (result.update_seq !== 0) {
+        refresh();
+        liveSync();
+        return;
+      }
 
       // Otherwise fill in some dummy data:
       db.put(dbModel.create('Clean up the house'))
         .then(() => db.put(dbModel.create('Find the keys')))
+        .then(liveSync)
         .catch(error)
     })
   })
