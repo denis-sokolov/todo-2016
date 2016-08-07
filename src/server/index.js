@@ -1,7 +1,5 @@
 'use strict';
 
-const os = require('os');
-
 const express = require('express');
 const expressPouchDb = require('express-pouchdb');
 const namor = require('namor');
@@ -25,7 +23,7 @@ module.exports = function(options){
   });
 
   app.use('/db', expressPouchDb(options.db, {
-    configPath: os.tmpdir() + '/express-pouchdb-dummy-config'
+    mode: 'minimumForPouchDB'
   }));
 
   app.get('/:name', function(req, res){
