@@ -2,7 +2,7 @@
   "name": "todo-2016",
   "private": true,
   "scripts": {
-    "start": "node src/start"
+    "start": "node src/bootstrap/index"
   },
   "engines": {
     "node": "^4.0.0"
@@ -11,9 +11,11 @@
   "license": "ISC",
   "dependencies": {
     "browserify": "^13.1.0",
+    "css-modulesify": "^0.25.1",
     "express": "^4.14.0",
     "namor": "^0.2.1",
     "react": "^15.3.0",
-    "react-dom": "^15.3.0"
+    "react-dom": "^15.3.0",
+    "stream-to-string": "^1.1.0"
   }
 }

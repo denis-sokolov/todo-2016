@@ -2,12 +2,14 @@ const React = require('react');
 
 const Add = require('./add');
 
+const styles = require('./styles.css');
+
 const h = React.createElement.bind(React)
 
 module.exports = function(props){
   if (!props.onAdd || !props.items) throw new Error('setup required props')
 
-  return h('div', {},
+  return h('div', { className: styles.app },
     h('h1', {}, 'My todo items:'),
     h('ul', {},
       props.items.map(item =>
