@@ -1,0 +1,16 @@
+{
+  "name": "todo-2016",
+  "private": true,
+  "scripts": {
+    "start": "node src/start"
+  },
+  "engines": {
+    "node": "^4.0.0"
+  },
+  "author": "Denis Sokolov <denis@sokolov.cc>",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0",
+    "namor": "^0.2.1"
+  }
+}
