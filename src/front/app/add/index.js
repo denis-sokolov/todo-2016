@@ -1,5 +1,7 @@
 const React = require('react');
 
+const styles = require('./styles.css');
+
 const h = React.createElement.bind(React)
 
 module.exports = function(props){
@@ -15,7 +17,7 @@ module.exports = function(props){
     input.focus();
   }
 
-  return h('form', { onSubmit: addFormSubmit },
+  return h('form', { className: styles.form, onSubmit: addFormSubmit },
     h('input', { ref: (inp) => input = inp }),
     h('button', {}, 'Add')
   )

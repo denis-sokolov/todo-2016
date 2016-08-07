@@ -1,0 +1,10 @@
+.form {
+
+}
+.form input, .form button {
+  font-size: 100%;
+}
+.form button {
+  font-size: 100%;
+  padding: 3px;
+}
