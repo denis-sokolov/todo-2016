@@ -3,7 +3,9 @@ const PouchDB = require('pouchdb');
 const dbModel = require('./dbModel');
 const pureRender = require('./render');
 
-const db = new PouchDB('tasks');
+const LIST_KEY = document.location.pathname.slice(1)
+
+const db = new PouchDB(LIST_KEY);
 
 const error = function(err, msg){
   /* eslint no-console: 0 */
@@ -28,7 +30,7 @@ db.changes({ live: true, since: 'now' })
   .on('change', refresh)
   .on('error', error)
 
-PouchDB.sync(db, document.location.origin + '/db' + document.location.pathname)
+PouchDB.sync(db, document.location.origin + '/db/' + LIST_KEY)
   .on('complete', function(){
     db.info(function(err, result){
       if (err) return error(err);
