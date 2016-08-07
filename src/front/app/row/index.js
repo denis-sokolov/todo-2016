@@ -7,7 +7,8 @@ const h = React.createElement.bind(React)
 module.exports = function(props){
   const item = props.item;
   return h('li', {
-    className: styles.row
+    className: styles.row + ' ' +
+      (item.completed ? styles.completed : '')
   },
     h('label', {},
       h('input', {

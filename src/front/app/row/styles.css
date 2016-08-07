@@ -1,6 +1,9 @@
 .row {
   padding: 5px 0;
 }
+.completed {
+  opacity: 0.5;
+}
 .checkmark {
   margin-right: 5px;
   vertical-align: 2px;
