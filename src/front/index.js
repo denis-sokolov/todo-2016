@@ -1,23 +1,50 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
+const PouchDB = require('pouchdb');
 
-const App = require('./app');
+const pureRender = require('./render');
+const makeTaskId = require('./makeTaskId');
 
-const items = [
-  { title: 'Clean up the house', key: 'preset-1' },
-  { title: 'Find keys', key: 'preset-2' },
-]
+const db = new PouchDB('tasks');
 
-const render = function(){
-  ReactDOM.render(
-    React.createElement(App, {
-      items: items,
-      onAdd: title => {
-        items.push({ title: title, key: items.length })
-        render()
-      }
-    }),
-    window.document.getElementById('app'))
+const error = function(err, msg){
+  /* eslint no-console: 0 */
+  if (msg) console.error(msg, err)
+  else console.error(err);
+};
+
+const render = function(items){
+  pureRender({
+    items: items,
+    onAdd: (title) => {
+      db.put({ _id: makeTaskId(), title: title })
+    }
+  })
 }
 
-render()
+const refresh = function(){
+  db.allDocs({ include_docs: true }, function(err, result){
+    render(result.rows.map(row => ({
+      key: row.doc._id,
+      title: row.doc.title
+    })));
+  });
+};
+
+db.changes({ live: true, since: 'now' })
+  .on('change', refresh)
+  .on('error', error)
+
+PouchDB.sync(db, document.location.origin + '/db' + document.location.pathname)
+  .on('complete', function(){
+    db.info(function(err, result){
+      if (err) return error(err);
+
+      // If the database has not just been created, render:
+      if (result.update_seq !== 0) return refresh();
+
+      // Otherwise fill in some dummy data:
+      db.put({ _id: makeTaskId(), title: 'Clean up the house', })
+        .then(() => db.put({ _id: makeTaskId(), title: 'Find the keys' }))
+        .catch(error)
+    })
+  })
+  .on('error', error)

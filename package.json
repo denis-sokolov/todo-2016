@@ -19,6 +19,7 @@
     "pouchdb": "^5.4.5",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
-    "stream-to-string": "^1.1.0"
+    "stream-to-string": "^1.1.0",
+    "uuid": "^2.0.2"
   }
 }
