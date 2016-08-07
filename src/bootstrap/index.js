@@ -11,6 +11,7 @@ const makeBundle = require('./makeBundle');
 const PORT = process.env.PORT || 8000;
 
 const InMemPouchDB = PouchDB.defaults({db: memdown });
+InMemPouchDB.setMaxListeners(30);
 
 server({
   db: InMemPouchDB,
