@@ -1,6 +1,7 @@
 const React = require('react');
 
 const Add = require('./add');
+const Row = require('./row');
 
 const styles = require('./styles.css');
 
@@ -15,21 +16,12 @@ module.exports = function(props){
   return h('div', { className: styles.app },
     h('h1', {}, 'My todo'),
     h('ul', { className: styles.list },
-      items.map(item =>
-        h('li', { key: item.key, className: styles.row },
-          h('label', {},
-            h('input', {
-              type: 'checkbox',
-              checked: item.completed,
-              className: styles.checkmark,
-              onChange: item.completed
-                ? () => props.onUncomplete(item.key)
-                : () => props.onComplete(item.key)
-            }),
-            h('span', {}, item.title)
-          )
-        )
-      )
+      items.map(item => h(Row, {
+        key: item.key,
+        item: item,
+        onComplete: props.onComplete,
+        onUncomplete: props.onUncomplete
+      }))
     ),
     h(Add, { onAdd: props.onAdd })
   );
