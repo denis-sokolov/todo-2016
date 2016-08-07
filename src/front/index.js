@@ -1,7 +1,7 @@
 const PouchDB = require('pouchdb');
 
+const dbModel = require('./dbModel');
 const pureRender = require('./render');
-const makeTaskId = require('./makeTaskId');
 
 const db = new PouchDB('tasks');
 
@@ -14,18 +14,13 @@ const error = function(err, msg){
 const render = function(items){
   pureRender({
     items: items,
-    onAdd: (title) => {
-      db.put({ _id: makeTaskId(), title: title })
-    }
+    onAdd: (title) => { db.put(dbModel.create(title)) }
   })
 }
 
 const refresh = function(){
   db.allDocs({ include_docs: true }, function(err, result){
-    render(result.rows.map(row => ({
-      key: row.doc._id,
-      title: row.doc.title
-    })));
+    render(result.rows.map(row => dbModel.docToObject(row.doc)))
   });
 };
 
@@ -42,8 +37,8 @@ PouchDB.sync(db, document.location.origin + '/db' + document.location.pathname)
       if (result.update_seq !== 0) return refresh();
 
       // Otherwise fill in some dummy data:
-      db.put({ _id: makeTaskId(), title: 'Clean up the house', })
-        .then(() => db.put({ _id: makeTaskId(), title: 'Find the keys' }))
+      db.put(dbModel.create('Clean up the house'))
+        .then(() => db.put(dbModel.create('Find the keys')))
         .catch(error)
     })
   })
