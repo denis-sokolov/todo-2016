@@ -1,9 +1,13 @@
 'use strict';
 
+const os = require('os');
+
 const express = require('express');
+const expressPouchDb = require('express-pouchdb');
 const namor = require('namor');
 
 module.exports = function(options){
+  if (!options.db) throw new Error('db required');
   if (!options.makeBundle) throw new Error('Need makeBundle option')
 
   const app = express();
@@ -19,6 +23,10 @@ module.exports = function(options){
       res.send(buff);
     })
   });
+
+  app.use('/db', expressPouchDb(options.db, {
+    configPath: os.tmpdir() + '/express-pouchdb-dummy-config'
+  }));
 
   app.get('/:name', function(req, res){
     res.sendFile(__dirname + '/todo.html');
