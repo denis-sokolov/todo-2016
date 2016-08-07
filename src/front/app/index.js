@@ -18,7 +18,14 @@ module.exports = function(props){
       items.map(item =>
         h('li', { key: item.key, className: styles.row },
           h('label', {},
-            h('input', { type: 'checkbox', className: styles.checkmark }),
+            h('input', {
+              type: 'checkbox',
+              checked: item.completed,
+              className: styles.checkmark,
+              onChange: item.completed
+                ? () => props.onUncomplete(item.key)
+                : () => props.onComplete(item.key)
+            }),
             h('span', {}, item.title)
           )
         )

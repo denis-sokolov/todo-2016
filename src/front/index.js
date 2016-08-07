@@ -16,7 +16,19 @@ const error = function(err, msg){
 const render = function(items){
   pureRender({
     items: items,
-    onAdd: (title) => { db.put(dbModel.create(title)) }
+    onAdd: (title) => { db.put(dbModel.create(title)) },
+    onComplete: (key) => {
+      db.get(dbModel.idByKey(key)).then(function(doc){
+        doc.completed = true
+        return db.put(doc)
+      }).catch(error);
+    },
+    onUncomplete: (key) => {
+      db.get(dbModel.idByKey(key)).then(function(doc){
+        doc.completed = false
+        return db.put(doc)
+      }).catch(error);
+    }
   })
 }
 

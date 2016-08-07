@@ -5,9 +5,6 @@ const App = require('./app');
 
 module.exports = function(opts){
   ReactDOM.render(
-    React.createElement(App, {
-      items: opts.items,
-      onAdd: opts.onAdd
-    }),
+    React.createElement(App, opts),
     window.document.getElementById('app'))
 }
